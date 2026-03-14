@@ -40,7 +40,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: app-jar
-          path: target/*.jar
+          path: target/
 
   fuzzing:
     name: Web Fuzzing
@@ -55,9 +55,10 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: app-jar
+          path: .
       - name: Start application
         run: |
-          JAR=$(ls *.jar | head -1)
+          JAR=$(ls target/*.jar | head -1)
           java -jar $JAR &
           for i in $(seq 1 30); do
             sleep 2
@@ -89,6 +90,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: app-jar
+          path: .
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Log in to GHCR
